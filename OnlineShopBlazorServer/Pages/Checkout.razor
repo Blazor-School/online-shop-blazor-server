@@ -1,0 +1,47 @@
+﻿@using Data;
+
+@page "/check-out"
+@inject IJSRuntime JsRuntime
+@inject CartService CartService
+
+<div>Products in cart:</div>
+<div class="d-flex flex-column">
+    @foreach (var product in ProductsInCart)
+    {
+        <ProductDetail Product="product" ShowBuyButton="false"></ProductDetail>
+    }
+</div>
+
+<EditForm Model="CheckoutInfo" OnValidSubmit="SubmitAsync">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div>
+        <label class="col-form-label" for="name">Name:</label>
+        <InputText id="name" class="form-control" @bind-Value="CheckoutInfo.Name"></InputText>
+        <ValidationMessage class="form-control" For="()=>CheckoutInfo.Name"></ValidationMessage>
+    </div>
+
+    <div>
+        <label class="col-form-label" for="address">Address:</label>
+        <InputText id="address" class="form-control" @bind-Value="CheckoutInfo.Address"></InputText>
+        <ValidationMessage class="form-control" For="()=>CheckoutInfo.Address"></ValidationMessage>
+    </div>
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    private CheckoutInfo CheckoutInfo = new();
+    private List<Product> ProductsInCart = new();
+
+    protected override void OnInitialized()
+    {
+        ProductsInCart = CartService.GetProductsInCart();
+    }
+
+    private async Task SubmitAsync()
+    {
+        await JsRuntime.InvokeVoidAsync("alert", "Thank you!");
+    }
+}

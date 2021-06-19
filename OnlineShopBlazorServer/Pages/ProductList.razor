@@ -1,0 +1,19 @@
+﻿@using Data
+
+@page "/product-list"
+@inject ProductService ProductService
+
+@foreach (var product in Products)
+{
+    <ProductDetail Product="product" ShowBuyButton="true"></ProductDetail>
+}
+<NavLink href="check-out">Check-out</NavLink>
+
+@code {
+    private List<Product> Products;
+
+    protected override void OnInitialized()
+    {
+        Products = ProductService.GetAllProducts();
+    }
+}

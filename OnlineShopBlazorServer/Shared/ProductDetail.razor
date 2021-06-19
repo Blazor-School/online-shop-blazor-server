@@ -1,0 +1,31 @@
+﻿@using Data
+
+@inject CartService CartService
+
+<div class="card">
+    <div class="card-title">
+        @Product.Name
+    </div>
+    <div class="card-body">
+        @Product.Description
+    </div>
+
+    @if (ShowBuyButton)
+    {
+        <div class="card-footer">
+            <button @onclick="Buy">Buy</button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Product Product { get; set; }
+    [Parameter]
+    public bool ShowBuyButton { get; set; }
+
+    private void Buy()
+    {
+        CartService.AddToCart(Product);
+    }
+}
